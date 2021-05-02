@@ -91,6 +91,8 @@ void ReadAnalog()
   }
 }
 
+// 
+
 void InitialValues()
 {
   //Set the values to zero before averaging
