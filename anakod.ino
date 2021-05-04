@@ -30,7 +30,7 @@ void setup()
   //----------------------------------------------------------------------------  
   //Stepper parameters
   //setting up some default values for maximum speed and maximum acceleration
-  stepper.setMaxSpeed(5000); //SPEED = Steps / second  
+  stepper.setMaxSpeed(10000); //SPEED = Steps / second  
   stepper.setAcceleration(1000); //ACCELERATION = Steps /(second)^2    
   stepper.setSpeed(500);
   delay(500);
@@ -59,7 +59,7 @@ void ReadAnalog()
   //This is a sort of a filter for the inaccuracy of the reading
   if(abs(Analog_X-Analog_X_AVG)>25) 
   {
-  stepper.setSpeed(5*(Analog_X-Analog_X_AVG));    
+  stepper.setSpeed(10*(Analog_X-Analog_X_AVG));    
   }
   else
   {
@@ -68,7 +68,7 @@ void ReadAnalog()
   //----------------------------------------------------------------------------  
   if(abs(Analog_Y-Analog_Y_AVG)>25) 
   {
-  stepper2.setSpeed(5*(Analog_Y-Analog_Y_AVG));  
+  stepper2.setSpeed(10*(Analog_Y-Analog_Y_AVG));  
   }
    else
   {
