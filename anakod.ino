@@ -35,7 +35,7 @@ void setup()
   stepper.setSpeed(500);
   delay(500);
   //----------------------------------------------------------------------------
-  stepper2.setMaxSpeed(5000); //SPEED = Steps / second  
+  stepper2.setMaxSpeed(10000); //SPEED = Steps / second  
   stepper2.setAcceleration(1000); //ACCELERATION = Steps /(second)^2    
   stepper2.setSpeed(500);
   delay(500);  
