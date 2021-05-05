@@ -2,19 +2,28 @@
 
 #include <AccelStepper.h> //accelstepper library
 
-AccelStepper stepper(1, 8, 9); // direction Digital 9 (CCW), pulses Digital 8 (CLK)
-AccelStepper stepper2(1, 10, 11); // direction Digital 11 (CCW), pulses Digital 10 (Clk)
-
+AccelStepper stepper(AccelStepper::DRIVER, 8, 9); // direction Digital 9 (CCW), pulses Digital 8 (CLK)
+AccelStepper stepper2(AccelStepper::DRIVER, 10, 11); // direction Digital 11 (CCW), pulses Digital 10 (Clk)
+AccelStepper stepper3(AccelStepper::DRIVER, 12, 13); // direction Dİgital 12, pulses Digtal 13
+AccelStepper stepper4(AccelStepper::DRIVER, 14, 15) ; // direction Dİgital 14, pulses Digtal 15
+  
 //Pins
-const byte Analog_X_pin = A0; //x-axis readings
-const byte Analog_Y_pin = A1; //y-axis readings
+//x and y axis readings
+const byte Analog1_X_pin = A0; 
+const byte Analog1_Y_pin = A1; 
+const byte Analog2_X_pin = A2; 
+const byte Analog2_Y_pin = A3;
 
 //Variables
-int Analog_X = 0; //x-axis value
-int Analog_Y = 0; //y-axis value
+int Analog1_X = 0;
+int Analog1_Y = 0; 
+int Analog2_X = 0;
+int Analog2_Y = 0;
 
-int Analog_X_AVG = 0; //x-axis value averagen
-int Analog_Y_AVG = 0; //y-axis value average
+int Analog1_X_AVG = 0; 
+int Analog1_Y_AVG = 0; 
+int Analog2_X_AVG = 0;
+int Analog2_Y_AVG = 0;
 
 void setup()
 {
@@ -23,8 +32,10 @@ void setup()
   Serial.begin(9600);
   //----------------------------------------------------------------------------    
   //PINS
-  pinMode(Analog_X_pin, INPUT);
-  pinMode(Analog_Y_pin, INPUT);  
+  pinMode(Analog1_X_pin, INPUT);
+  pinMode(Analog1_Y_pin, INPUT);
+  pinMode(Analog2_X_pin, INPUT);
+  pinMode(Analog2_Y_pin, INPUT);
   //----------------------------------------------------------------------------  
   InitialValues(); //averaging the values of the 3 analog pins (values from potmeters)
   //----------------------------------------------------------------------------  
@@ -38,43 +49,73 @@ void setup()
   stepper2.setMaxSpeed(10000); //SPEED = Steps / second  
   stepper2.setAcceleration(1000); //ACCELERATION = Steps /(second)^2    
   stepper2.setSpeed(500);
-  delay(500);  
-
+  delay(500);
+  //----------------------------------------------------------------------------
+  stepper3.setMaxSpeed(10000); //SPEED = Steps / second  
+  stepper3.setAcceleration(1000); //ACCELERATION = Steps /(second)^2    
+  stepper3.setSpeed(500);
+  delay(500);
+  //----------------------------------------------------------------------------
+  stepper4.setMaxSpeed(10000); //SPEED = Steps / second  
+  stepper4.setAcceleration(1000); //ACCELERATION = Steps /(second)^2    
+  stepper4.setSpeed(500);
+  delay(500);
 }
 
 void loop()
 {
   ReadAnalog();  
   stepper.runSpeed(); //step the motor (this will step the motor by 1 step at each loop indefinitely)
-  stepper2.runSpeed();  
+  stepper2.runSpeed();
+  stepper3.runSpeed();
+  stepper4.runSpeed();
 }
 
 void ReadAnalog()
 {
-  //Reading the 3 potentiometers in the joystick: x, y and r.
-  Analog_X = analogRead(Analog_X_pin);  
-  Analog_Y = analogRead(Analog_Y_pin);
+  //Reading the 3 potentiometers in the joystick: x, y
+  Analog1_X = analogRead(Analog1_X_pin);  
+  Analog1_Y = analogRead(Analog1_Y_pin);
+  Analog2_X = analogRead(Analog2_X_pin);
+  Analog2_Y = analogRead(Analog2_Y_pin);  
   
   //if the value is 25 "value away" from the average (midpoint), we allow the update of the speed
   //This is a sort of a filter for the inaccuracy of the reading
-  if(abs(Analog_X-Analog_X_AVG)>25) 
-  {
-  stepper.setSpeed(10*(Analog_X-Analog_X_AVG));    
-  }
+  if(abs(Analog1_X-Analog1_X_AVG)>25) 
+    {
+    stepper.setSpeed(10*(Analog1_X-Analog1_X_AVG));    
+    }
   else
-  {
+    {
     stepper.setSpeed(0);
-  }
+    }
   //----------------------------------------------------------------------------  
-  if(abs(Analog_Y-Analog_Y_AVG)>25) 
-  {
-  stepper2.setSpeed(10*(Analog_Y-Analog_Y_AVG));  
-  }
-   else
-  {
+  if(abs(Analog1_Y-Analog1_Y_AVG)>25) 
+    {
+    stepper2.setSpeed(10*(Analog1_Y-Analog1_Y_AVG));  
+    }
+  else
+     {
     stepper2.setSpeed(0);
-  }
+     }
   //----------------------------------------------------------------------------
+  if(abs(Analog2_X-Analog2_X_AVG)>25) 
+    {
+      stepper3.setSpeed(10*(Analog2_X-Analog2_X_AVG));    
+    }
+  else
+    {
+      stepper3.setSpeed(0);
+    }
+  //----------------------------------------------------------------------------
+  if(abs(Analog2_Y-Analog2_Y_AVG)>25) 
+    {
+      stepper4.setSpeed(10*(Analog2_Y-Analog2_Y_AVG));    
+    }
+  else
+    {
+      stepper4.setSpeed(0);
+    }
 }
 
 // 
@@ -82,25 +123,37 @@ void ReadAnalog()
 void InitialValues()
 {
   //Set the values to zero before averaging
-  float tempX = 0;
-  float tempY = 0;
+  float temp1X = 0;
+  float temp1Y = 0;
+  float temp2X = 0;
+  float temp2Y = 0;
+  
   //----------------------------------------------------------------------------  
   //read the analog 50x, then calculate an average. 
   //they will be the reference values
   for(int i = 0; i<50; i++)
   {
-     tempX += analogRead(Analog_X_pin);  
+     temp1X += analogRead(Analog1_X_pin);  
      delay(10); //allowing a little time between two readings
-     tempY += analogRead(Analog_Y_pin);        
+     temp1Y += analogRead(Analog1_Y_pin);        
      delay(10);
+     temp2X += analogRead(Analog2_X_pin);
+     delay(10);
+     temp2Y += analogRead(Analog2_Y_pin);
   }
   //----------------------------------------------------------------------------  
-  Analog_X_AVG = tempX/50; 
-  Analog_Y_AVG = tempY/50;  
+  Analog1_X_AVG = temp1X/50; 
+  Analog1_Y_AVG = temp1Y/50;
+  Analog2_X_AVG = temp2X/50;
+  Analog2_Y_AVG = temp2Y/50;
   //----------------------------------------------------------------------------  
-  Serial.print("AVG_X: ");
-  Serial.println(Analog_X_AVG);
-  Serial.print("AVG_Y: ");
-  Serial.println(Analog_Y_AVG);
+  Serial.print("AVG1_X: ");
+  Serial.println(Analog1_X_AVG);
+  Serial.print("AVG1_Y: ");
+  Serial.println(Analog1_Y_AVG);
+  Serial.print("AVG2_X: ");
+  Serial.println(Analog2_X_AVG);
+  Serial.print("AVG2_Y: ");
+  Serial.println(Analog2_Y_AVG);
   Serial.println("Calibration finished");  
 }
