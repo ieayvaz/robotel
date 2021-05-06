@@ -4,8 +4,8 @@
 
 AccelStepper stepper(AccelStepper::DRIVER, 8, 9); // direction Digital 9 (CCW), pulses Digital 8 (CLK)
 AccelStepper stepper2(AccelStepper::DRIVER, 10, 11); // direction Digital 11 (CCW), pulses Digital 10 (Clk)
-AccelStepper stepper3(AccelStepper::DRIVER, 12, 13); // direction Dİgital 12, pulses Digtal 13
-AccelStepper stepper4(AccelStepper::DRIVER, 14, 15) ; // direction Dİgital 14, pulses Digtal 15
+AccelStepper stepper3(AccelStepper::DRIVER, 12, 13); // direction Dİgital 13, pulses Digtal 12
+AccelStepper stepper4(AccelStepper::DRIVER, 14, 15) ; // direction Dİgital 15, pulses Digtal 14
   
 //Pins
 //x and y axis readings
