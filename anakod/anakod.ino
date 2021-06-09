@@ -11,6 +11,11 @@ enum class axis_type
     axis_4,
   };
 
+int axis_1_cm = 0;
+int axis_2_angle = 0;
+int axis_3_angle = 0;
+int axis_4_angle = 0;
+
 const char* START_DELIM = "<";
 const char* END_DELIM = ">";
 const char* AXIS_1_DELIM = "1";
@@ -18,6 +23,9 @@ const char* AXIS_2_DELIM = "2";
 const char* AXIS_3_DELIM = "3";
 const char* AXIS_4_DELIM = "4";
 const char* GRIPPER_DELIM = "G";
+
+#define AXIS_AKT_VAL 5680/360
+#define LINEER_AKT 
 
 AccelStepper stepper(AccelStepper::DRIVER, 8, 9); // direction Digital 9 (CCW), pulses Digital 8 (CLK)
 AccelStepper stepper2(AccelStepper::DRIVER, 10, 11); // direction Digital 11 (CCW), pulses Digital 10 (Clk)
@@ -95,19 +103,32 @@ void set_axis(int angle, axis_type axis)
   switch(axis)
     {
     case(axis_type::axis_1):
-      ax = "Eksen 1";
-    break;
+      stepper.moveTo((angle - axis_1_cm) * LINEER_AKT);
+      break;
     case(axis_type::axis_2):
-      ax = "Eksen 2";
-    break;
+      stepper2.moveTo((angle - axis_2_angle) * AXIS_AKT_VAL);
+      stepper2.setSpeed(10000); 
+
+      while (stepper2.currentPosition() != stepper2.targetPosition()) { 
+	stepper2.runSpeedToPosition();
+}
+      break;
     case(axis_type::axis_3):
-      ax = "Eksen 3";
-    break;
+      stepper3.moveTo((angle - axis_3_angle) * AXIS_AKT_VAL);
+      stepper3.setSpeed(10000); 
+      
+      while (stepper3.currentPosition() != stepper3.targetPosition()) { 
+	stepper3.runSpeedToPosition();
+      }
+      break;
     case(axis_type::axis_4):
-      ax = "Eksen 4";
-    break;
+      stepper4.moveTo((angle - axis_4_angle) * AXIS_AKT_VAL);
+      stepper4.setSpeed(10000);
+      
+      while (stepper4.currentPosition() != stepper4.targetPosition()) {
+        stepper4.runSpeedToPosition();
+      }   
+      break;
     }
-  String angles(angle);
-  Serial.println("Eksen = " + ax);
-  Serial.println("Aci = " + angles);
+ 
 }
