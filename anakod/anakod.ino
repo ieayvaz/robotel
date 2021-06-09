@@ -3,14 +3,21 @@
 #include <AccelStepper.h> //accelstepper library
 
 boolean connection = false;
+enum class axis_type
+  {
+    axis_1,
+    axis_2,
+    axis_3,
+    axis_4,
+  };
 
-#define START_DELIM "<"
-#define END_DELIM ">"
-#define AXIS_1_DELIM "1"
-#define AXIS_2_DELIM "2"
-#define AXIS_3_DELIM "3"
-#define AXIS_4_DELIM "4"
-#define GRIPPER_DELIM "G"
+const char* START_DELIM = "<";
+const char* END_DELIM = ">";
+const char* AXIS_1_DELIM = "1";
+const char* AXIS_2_DELIM = "2";
+const char* AXIS_3_DELIM = "3";
+const char* AXIS_4_DELIM = "4";
+const char* GRIPPER_DELIM = "G";
 
 AccelStepper stepper(AccelStepper::DRIVER, 8, 9); // direction Digital 9 (CCW), pulses Digital 8 (CLK)
 AccelStepper stepper2(AccelStepper::DRIVER, 10, 11); // direction Digital 11 (CCW), pulses Digital 10 (Clk)
@@ -20,10 +27,9 @@ AccelStepper stepper4(AccelStepper::DRIVER, 14, 15) ; // direction Dİgital 15, 
 void setup()
 {
   String test = "G";
-  if(!test == GRIPPER_DELIM)
-    {
-#error "String eslestirme testi hatali!"
-    }
+  #if !(tes == GRIPPER_DELIM)
+  #error "String eslestirme hatali!"
+  #endif
   //SERIAL
   Serial.begin(9600);
   //----------------------------------------------------------------------------    
@@ -72,21 +78,11 @@ void loop()
 
 void process_input(const String& str)
 {
-  switch(str.substring(0,1))
-    {
-    case(AXIS_1_DELIM)
-      set_axis(str.substring(2).toInt(), axis_type::axis_1);
-    break;
-    case(AXIS_2_DELIM)
-      set_axis(str.substring(2).toInt(), axis_type::axis_2);
-    break;
-    case(AXIS_3_DELIM)
-      set_axis(str.substring(2).toInt(), axis_type::axis_3);
-    break;
-    case(AXIS_4_DELIM)
-      set_axis(str.substring(2).toInt(), axis_type::axis_4);
-    break;
-    }
+  String sub = str.substring(0,1);
+  if(sub == AXIS_1_DELIM)
+  set_axis(str.substring(2).toInt(), axis_type::axis_1);
+  else if(sub == AXIS_2_DELIM)
+  set_axis(str.substring(2).toInt(), axis_type::axis_2);
 }
 
 void set_axis(int angle, axis_type axis)
@@ -94,16 +90,16 @@ void set_axis(int angle, axis_type axis)
   String ax;
   switch(axis)
     {
-    case(axis_type::axis_1)
+    case(axis_type::axis_1):
       ax = "Eksen 1";
     break;
-    case(axis_type::axis_2)
+    case(axis_type::axis_2):
       ax = "Eksen 2";
     break;
-    case(axis_type::axis_3)
+    case(axis_type::axis_3):
       ax = "Eksen 3";
     break;
-    case(axis_type::axis_4)
+    case(axis_type::axis_4):
       ax = "Eksen 4";
     break;
     }
@@ -111,11 +107,3 @@ void set_axis(int angle, axis_type axis)
   Serial.println("Eksen = " + ax);
   Serial.println("Aci = " + angles);
 }
-
-enum class axis_type
-  {
-    axis_1,
-    axis_2,
-    axis_3,
-    axis_4
-  }
