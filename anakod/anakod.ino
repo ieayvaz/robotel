@@ -83,6 +83,10 @@ void process_input(const String& str)
   set_axis(str.substring(2).toInt(), axis_type::axis_1);
   else if(sub == AXIS_2_DELIM)
   set_axis(str.substring(2).toInt(), axis_type::axis_2);
+  else if(sub == AXIS_3_DELIM)
+  set_axis(str.substring(2).toInt(), axis_type::axis_3);
+  else if(sub == AXIS_4_DELIM)
+  set_axis(str.substring(2).toInt(), axis_type::axis_4);
 }
 
 void set_axis(int angle, axis_type axis)
