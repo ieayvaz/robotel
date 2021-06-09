@@ -40,28 +40,6 @@ void setup()
   #endif
   //SERIAL
   Serial.begin(9600);
-  //----------------------------------------------------------------------------    
-  //Stepper parameters
-  //setting up some default values for maximum speed and maximum acceleration
-  stepper.setMaxSpeed(10000); //SPEED = Steps / second  
-  stepper.setAcceleration(1000); //ACCELERATION = Steps /(second)^2    
-  stepper.setSpeed(500);
-  delay(500);
-  //----------------------------------------------------------------------------
-  stepper2.setMaxSpeed(10000); //SPEED = Steps / second  
-  stepper2.setAcceleration(1000); //ACCELERATION = Steps /(second)^2    
-  stepper2.setSpeed(500);
-  delay(500);
-  //----------------------------------------------------------------------------
-  stepper3.setMaxSpeed(10000); //SPEED = Steps / second  
-  stepper3.setAcceleration(1000); //ACCELERATION = Steps /(second)^2    
-  stepper3.setSpeed(500);
-  delay(500);
-  //----------------------------------------------------------------------------
-  stepper4.setMaxSpeed(10000); //SPEED = Steps / second  
-  stepper4.setAcceleration(1000); //ACCELERATION = Steps /(second)^2    
-  stepper4.setSpeed(500);
-  delay(500);
 }
 
 void loop()
@@ -103,31 +81,18 @@ void set_axis(int angle, axis_type axis)
   switch(axis)
     {
     case(axis_type::axis_1):
-      stepper.moveTo((angle - axis_1_cm) * LINEER_AKT);
       break;
     case(axis_type::axis_2):
-      stepper2.moveTo((angle - axis_2_angle) * AXIS_AKT_VAL);
-      stepper2.setSpeed(10000); 
-
-      while (stepper2.currentPosition() != stepper2.targetPosition()) { 
-	stepper2.runSpeedToPosition();
-}
+      stepper2.moveTo(angle * AXIS_AKT_VAL);
+      stepper2.runToPosition();
       break;
     case(axis_type::axis_3):
-      stepper3.moveTo((angle - axis_3_angle) * AXIS_AKT_VAL);
-      stepper3.setSpeed(10000); 
-      
-      while (stepper3.currentPosition() != stepper3.targetPosition()) { 
-	stepper3.runSpeedToPosition();
-      }
+      stepper3.moveTo(angle * AXIS_AKT_VAL);
+      stepper3.runToPosition();
       break;
     case(axis_type::axis_4):
-      stepper4.moveTo((angle - axis_4_angle) * AXIS_AKT_VAL);
-      stepper4.setSpeed(10000);
-      
-      while (stepper4.currentPosition() != stepper4.targetPosition()) {
-        stepper4.runSpeedToPosition();
-      }   
+      stepper4.moveTo(angle * AXIS_AKT_VAL);
+      stepper4.runToPosition();
       break;
     }
  
